@@ -1,0 +1,34 @@
+<%- include('../includes/head.ejs') %>
+    <title>Document</title>
+    </head>
+    <main>
+        <form action="/admin/add-product" method="post" enctype="multipart/form-data">
+            <div>
+                <label for="title">Title</label>
+                <input type="text" name="title" id="title">
+            </div>
+            <div>
+                <label for="imageUrl">imageUrl</label>
+                <input type="file" id="image" name="image" multiple>
+            </div>
+            <div>
+                <label for="price">price</label>
+                <input type="number" name="price" id="price" step="0.001">
+            </div>
+            <div>
+                <label for="total">Total</label>
+                <input type="number" name="total" id="total">
+            </div>
+            <div>
+                <label for="description">description</label>
+                <textarea name="description" id="" cols="30" rows="10">
+                </textarea>
+            </div>
+            <button type="submit">
+                Add Product
+            </button>
+        </form>
+    </main>
+
+    <body>
+        <%- include('../includes/end.ejs') %>
