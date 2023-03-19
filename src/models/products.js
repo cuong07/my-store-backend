@@ -25,6 +25,9 @@ const Product = sequelize.define('product', {
         type: Sequelize.INTEGER,
         allowNull: false,
     },
+    category: {
+        type: Sequelize.INTEGER,
+    }
 });
 
 module.exports = Product;

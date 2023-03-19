@@ -19,7 +19,7 @@ app.use(bodyParser.json())
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-Products.belongsTo(User, { constraints: true, onDelete: 'CASCADE' })
+Products.belongsTo(User, { constraints: false });
 User.hasMany(Products)
 
 app.use((req, res, next) => {
@@ -30,6 +30,8 @@ app.use((req, res, next) => {
         })
         .catch(err => console.log(err));
 });
+
+
 
 app.use(adminRoutes);
 
