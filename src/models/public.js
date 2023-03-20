@@ -11,7 +11,13 @@ const Public = sequelize.define('public', {
     },
     saleOff: {
         type: Sequelize.INTEGER,
+    },
+    id: {
+        type: Sequelize.INTEGER,
+        autoIncrement: true,
+        allowNull: false,
+        primaryKey: true
     }
 });
 
-export default Public;
+module.exports = Public;

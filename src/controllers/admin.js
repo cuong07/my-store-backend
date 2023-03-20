@@ -1,8 +1,6 @@
-const { response } = require("express");
 const Products = require("../models/products");
 const cloudinary = require('../../cloudinary');
 const fs = require('fs');
-const { JSON } = require("sequelize");
 const Product = require("../models/products");
 
 exports.postAddProduct = async (req, res, next) => {
