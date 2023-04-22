@@ -40,8 +40,8 @@ Order.belongsToMany(Products, { through: CartItem });
 
 
 app.use(cors({
-    origin: true,
-    credentials: true
+    origin: '*',
+    credentials: true,
 }));
 
 
