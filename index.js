@@ -38,9 +38,6 @@ Products.belongsToMany(Cart, { through: CartItem });
 Products.belongsToMany(Order, { through: CartItem });
 Order.belongsToMany(Products, { through: CartItem });
 
-
-const cors = require("cors");
-
 app.use(
     cors({
         origin: true,
