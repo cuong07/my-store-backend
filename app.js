@@ -48,7 +48,9 @@ app.use("/api", adminRoutes);
 app.use("/api", shopRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api", orderRoutes);
-
+app.get((req, res) => {
+    res.status(404).send('Sorry, resource not found');
+});
 
 
 // app.use(async (req, res, next) => {
