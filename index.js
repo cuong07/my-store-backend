@@ -40,15 +40,17 @@ Order.belongsToMany(Products, { through: CartItem });
 
 
 app.use(cors({
-    origin: ['https://my-store-frontend-xi.vercel.app', 'http://localhost:3000'],
-    credentials: true,
+    origin: true,
+    credentials: true
 }));
+
 
 
 app.use("/api", adminRoutes);
 app.use("/api", shopRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api", orderRoutes);
+
 app.get((req, res) => {
     res.status(404).send('Sorry, resource not found');
 });
@@ -57,7 +59,6 @@ app.get('/', (req, res) => {
 })
 
 sequelize
-    // .sync({ force: true })
     .sync()
     .then(user => {
         app.listen('5000', () => {
