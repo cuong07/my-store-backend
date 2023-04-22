@@ -39,10 +39,15 @@ Products.belongsToMany(Order, { through: CartItem });
 Order.belongsToMany(Products, { through: CartItem });
 
 
-app.use(cors({
-    origin: '*',
-    credentials: true,
-}));
+const cors = require("cors");
+
+app.use(
+    cors({
+        origin: true,
+        credentials: true,
+    })
+);
+
 
 
 
