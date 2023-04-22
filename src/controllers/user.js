@@ -9,7 +9,7 @@ const generateToken = (user) => {
     return jwt.sign(
         { email: user.email, id: user.id, admin: user.admin },
         process.env.SECRET_KEY,
-        { expiresIn: "30s" }
+        { expiresIn: "20s" }
     );
 }
 
@@ -23,7 +23,6 @@ const generateRefreshToken = (user) => {
 
 exports.signup = async (req, res) => {
     const { username, email, password, name } = req.body;
-
     try {
         const existingUser = await User.findOne({ where: { email: email } })
         if (existingUser) {
@@ -49,7 +48,6 @@ exports.signup = async (req, res) => {
     }
 }
 
-
 exports.signin = async (req, res) => {
     const { password, email } = req.body;
     try {
@@ -57,9 +55,7 @@ exports.signin = async (req, res) => {
         if (!existingUser) {
             return res.status(404).json({ message: "Không tìm thây người dùng" })
         }
-
         const matchPassword = await bcrypt.compare(password, existingUser.password);
-
         if (!matchPassword) {
             return res.status(400).json({ message: "Mật khẩu không đúng mời nhập lại" })
         }
@@ -67,55 +63,44 @@ exports.signin = async (req, res) => {
         const refreshToken = generateRefreshToken(existingUser);
         refreshTokens.push(refreshToken);
         refreshTokens.push(refreshTokens)
-
         res.cookie("refreshToken", refreshToken, {
             httpOnly: true,
             secure: false,
             path: "/",
-            sameSite: "strict"
+            sameSite: 'strict'
         })
-
         res.status(201).json({
             user: existingUser,
             token
         })
-
-
     } catch (error) {
         console.log(error);
         res.status(500).json({ message: "something went wrong" });
     }
 }
 
-
-
-exports.refreshToken = async (req, res) => {
-    //get refreshtoken from client
+exports.refreshToken = async (req, res, next) => {
     const refreshToken = req.cookies.refreshToken;
-    // Nếu không có refresh token thì sẽ báo lỗi
     if (!refreshToken) return res.status(401).json("You're not authenticated");
     if (!refreshTokens.includes(refreshToken)) return res.status(403).json("Token is not valid");
     try {
         const user = jwt.verify(refreshToken, process.env.SECRET_REFRESHTOKEN_KEY);
-        // create a new token and refreshToken
         refreshTokens = refreshTokens.filter(token => token !== refreshToken)
         const newToken = generateToken(user);
         const newRefreshToken = generateRefreshToken(user);
         refreshTokens.push(newRefreshToken);
-
         res.cookie("refreshToken", newRefreshToken, {
             httpOnly: true,
             secure: false,
             path: "/",
-            sameSite: "strict"
+            sameSite: 'strict'
         })
-        res.status(200).json({ token: newToken })
+        res.status(200).json(newToken)
+        next();
     } catch (error) {
         console.log(error);
     }
 };
-
-
 
 exports.getUsers = (req, res) => {
     User.findAll()
@@ -124,18 +109,23 @@ exports.getUsers = (req, res) => {
         })
         .catch(err => console.log(err))
 }
-exports.deleteUser = (req, res) => {
-    const id = req.params.id;
-    User.destroy({ where: { id: id } })
-        .then(users => {
-            return res.status(200).json({ message: "Deleted" });
-        })
-        .catch(err => console.log(err))
-}
 
+
+exports.deleteUser = async (req, res) => {
+    try {
+        await User.destroy({
+            where: {
+                id: req.params.id
+            }
+        })
+        return res.status(200).json("deleted");
+    } catch (err) {
+        return res.status(500).json(err);
+    }
+}
 
 exports.userLogout = (req, res) => {
     res.clearCookie("refreshToken");
     refreshTokens = refreshTokens.filter(token => token !== req.cookies.refreshToken);
-    res.status(200).json("Logout successfully");
+    res.status(200).json("Logout successfully6");
 }

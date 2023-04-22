@@ -19,70 +19,46 @@ exports.postAddProduct = async (req, res, next) => {
             err: "error"
         })
     }
-    console.log(urls);
     const title = req.body.title;
     const price = req.body.price;
     const image = urls;
     const description = req.body.description;
     const total = req.body.total;
     const category = req.body.category;
-    req.user
-        .createProduct({
+    const id = req.body.id;
+    console.log(req.body.id);
+    try {
+        const response = await Products.create({
             title: title,
             image: image,
             price: price,
             description: description,
             total: total,
-            category: category
-        })
-        .then(response => {
-            console.log('Done!');
-            res.redirect('add-product')
-        })
-        .catch(err => {
-            console.log("🚀 ~ file: admin.js:44 ~ exports.postAddProduct= ~ err:", err)
-        })
-    res.status(200).json({
-        message: "successfully",
-        data: {
-            title: title,
-            image: image,
-            price: price,
-            description: description,
-            total: total,
-            category: category
-        }
-    })
+            category: category,
+            userId: id
+        });
+        res.status(200).json({
+            message: "Thêm thành công",
+            data: {
+                title: response.title,
+                image: response.image,
+                price: response.price,
+                description: response.description,
+                total: response.total,
+                category: response.category
+            }
+        });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({
+            message: "Có lỗi xảy ra khi thêm sản phẩm"
+        });
+    }
 }
 
+
 exports.getProducts = async (req, res, next) => {
-    const result = await req.user?.getProducts();
-    res.status(200).json({
-        message: "successfully",
-        data: result
-    })
 }
 
 exports.removeProduct = async (req, res, next) => {
-    Product.findByPk(3)
-        .then(product => {
-            res.status(200).json({
-                message: "successfully",
-                data: product
-            })
-        })
-        .catch(err => console.log(err))
-    // const prodId = req.body.title;
-    // console.log(prodId);
-    // res.redirect('/products')
-    // Product.destroy({
-    //     where: {
-    //         id: prodId
-    //     },
-    //     force: true
-    // })
-    //     .then((response) => {
-    //         res.redirect('/admin/products')
-    //     })
-    //     .catch((err) => { console.log(err) });
 }

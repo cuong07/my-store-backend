@@ -1,18 +1,30 @@
-const AllProducts = require("../models/AllProducts")
+const Products = require('../models/products')
 
-exports.getMensProduct = (req, res) => {
-    AllProducts.findAll({ where: { productType: req.params.productType } })
-        .then((Products) => {
+exports.getProducts = (req, res) => {
+    Products.findAll({ where: { category: req.params.category } })
+        .then((products) => {
             res.status(200).json({
                 message: "succsesfully",
-                data: Products
+                data: products
             })
         })
         .catch((err) => { console.log(err) })
 }
 
 exports.getDetailProduct = (req, res) => {
-    AllProducts.findOne({ where: { id: req.params.id } })
+    Products.findOne({ where: { id: req.params.id } })
+        .then((product) => {
+            console.log(product);
+            res.status(200).json({
+                message: "successfully",
+                data: product
+            })
+        })
+        .catch(err => console.log(err))
+}
+
+exports.getAllProducts = async (req, res, next) => {
+    Products.findAll()
         .then((product) => {
             res.status(200).json({
                 message: "successfully",
