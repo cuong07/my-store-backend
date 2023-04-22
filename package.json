@@ -31,6 +31,6 @@
     "sequelize": "^5.0.0-beta.11"
   },
   "scripts": {
-    "start": "nodemon app.js"
+    "start": "nodemon index.js"
   }
 }
