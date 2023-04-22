@@ -21,7 +21,7 @@ exports.postAddProduct = async (req, res, next) => {
     }
     const title = req.body.title;
     const price = req.body.price;
-    const image = urls;
+    const image = JSON.stringify(urls);
     const description = req.body.description;
     const total = req.body.total;
     const category = req.body.category;
