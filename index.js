@@ -40,7 +40,7 @@ Order.belongsToMany(Products, { through: CartItem });
 
 
 app.use(cors({
-    origin: 'http://localhost:3000',
+    origin: 'https://my-store-frontend-xi.vercel.app',
     credentials: true,
 }));
 
