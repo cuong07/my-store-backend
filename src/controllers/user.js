@@ -65,7 +65,7 @@ exports.signin = async (req, res) => {
         refreshTokens.push(refreshTokens)
         res.cookie("refreshToken", refreshToken, {
             httpOnly: true,
-            secure: false,
+            secure: true,
             path: "/",
             sameSite: 'strict'
         })
@@ -81,6 +81,7 @@ exports.signin = async (req, res) => {
 
 exports.refreshToken = async (req, res, next) => {
     const refreshToken = req.cookies.refreshToken;
+    console.log(refreshToken);
     if (!refreshToken) return res.status(401).json("You're not authenticated");
     if (!refreshTokens.includes(refreshToken)) return res.status(403).json("Token is not valid");
     try {
@@ -91,7 +92,7 @@ exports.refreshToken = async (req, res, next) => {
         refreshTokens.push(newRefreshToken);
         res.cookie("refreshToken", newRefreshToken, {
             httpOnly: true,
-            secure: false,
+            secure: true,
             path: "/",
             sameSite: 'strict'
         })
