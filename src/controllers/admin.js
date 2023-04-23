@@ -7,6 +7,7 @@ exports.postAddProduct = async (req, res, next) => {
     const uploader = async (path) => await cloudinary.uploads(path, "node-mystore")
     const urls = [];
     if (req.method === "POST") {
+        console.log(req.files)
         const files = req.files;
         for (const file of files) {
             const { path } = file;
