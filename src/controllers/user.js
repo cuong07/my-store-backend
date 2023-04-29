@@ -9,7 +9,7 @@ const generateToken = (user) => {
     return jwt.sign(
         { email: user.email, id: user.id, admin: user.admin },
         process.env.SECRET_KEY,
-        { expiresIn: "20s" }
+        { expiresIn: "365d" }
     );
 }
 
@@ -61,6 +61,7 @@ exports.signin = async (req, res) => {
         }
         const token = generateToken(existingUser);
         const refreshToken = generateRefreshToken(existingUser);
+        console.log(refreshToken);
         refreshTokens.push(refreshToken);
         res.cookie("refreshToken", refreshToken, {
             httpOnly: true,
@@ -80,6 +81,7 @@ exports.signin = async (req, res) => {
 
 exports.refreshToken = async (req, res, next) => {
     const refreshToken = req.cookies.refreshToken;
+    console.log(refreshToken);
     if (!refreshToken) return res.status(401).json("You're not authenticated");
     if (!refreshTokens.includes(refreshToken)) return res.status(403).json("Token is not valid");
     try {
