@@ -64,9 +64,9 @@ exports.signin = async (req, res) => {
         refreshTokens.push(refreshToken);
         res.cookie("refreshToken", refreshToken, {
             httpOnly: true,
-            secure: false,
+            secure: true,
             path: "/",
-            sameSite: 'strict'
+            sameSite: 'none'
         })
         res.status(201).json({
             user: existingUser,
@@ -90,9 +90,9 @@ exports.refreshToken = async (req, res, next) => {
         refreshTokens.push(newRefreshToken);
         res.cookie("refreshToken", newRefreshToken, {
             httpOnly: true,
-            secure: false,
+            secure: true,
             path: "/",
-            sameSite: 'strict'
+            sameSite: 'none'
         })
         res.status(200).json(newToken)
         next();
