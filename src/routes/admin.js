@@ -9,4 +9,4 @@ router.post('/add-product', upload.array('image'), adminControllers.postAddProdu
 router.post('/remove-product', adminControllers.removeProduct)
 router.get('/remove-product', adminControllers.removeProduct)
 
-module.exports = router;
+module.exports = router; 
